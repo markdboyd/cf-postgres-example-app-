@@ -1,13 +1,14 @@
 "use strict";
 const express = require("express");
-const app = express();
 
 console.log("**************************");
-console.log("* Test postgresl backend *");
+console.log("* Test PostgreSQL backend *");
 console.log("**************************");
 
 const pg = require("pg");
 const cfenv = require('cfenv');
+
+const app = express();
 
 const appEnv = cfenv.getAppEnv();
 const dbService = appEnv.services['postgres'][0];
@@ -44,23 +45,6 @@ async function stageDatabase() {
   console.log("INSERT OK"); 
 }
 
-// function main(type, error, res) {
-//   if ( type == "starting") {
-//     if (error) {
-//       console.log("Error during startup !");
-//       process.exit(1);
-//     }
-//   } else {
-//     if (error) {
-//       console.error("Error during http get !");
-//       res.status(404).send('Start unsuccessful service not available');
-//     } else {
-//       console.log("Ok, service available");
-//       res.send('This is a test app for postgres-docker');
-//     }
-//   }
-// }
-
 async function getWords (_, res) {
   if (!dbStaged) {
     await stageDatabase();
@@ -68,13 +52,6 @@ async function getWords (_, res) {
   }
   const result = await client.query('SELECT * FROM words ORDER BY word ASC');
 
-  // console.log("SELECT OK : " + result.rows[0].word);
-  // if (result.rows[0].word != "TestPostgres") {
-  //   console.error("Word TestPostgres not found => Exit");
-  //   return main(type, true, res);
-  // }
-
-  // main(type, false, res);
   return res.send(result.rows)
 }
 
