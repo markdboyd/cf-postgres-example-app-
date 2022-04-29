@@ -32,10 +32,10 @@ client.connect(function(err) {
 async function stageDatabase() {
   await client.query("DROP TABLE IF EXISTS words");
   console.log("DROP TABLE OK");
+  
   await client.query(
     "CREATE TABLE IF NOT EXISTS words (word varchar(256) NOT NULL, definition varchar(256) NOT NULL)"
   );
-
   console.log("CREATE TABLE OK");
   
   let queryText = "INSERT INTO words(word, definition) VALUES($1, $2)";
